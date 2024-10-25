@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potencias de Funciones Trigonométricas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.min.js"></script>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #000000; 
+            color: #0026ff; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px; 
+        }
+        .calculator { 
+            border: 1px solid #ccc; 
+            padding: 20px; 
+            border-radius: 10px; 
+            width: 100%; 
+            max-width: 500px; 
+            background: #fff; 
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+        }
+        .calculator input, .calculator select, .calculator button { 
+            width: 100%; 
+            padding: 10px; 
+            margin: 5px 0; 
+            border-radius: 5px; 
+            border: 1px solid #ccc; 
+            font-size: 1em; 
+        }
+        .result, .steps { 
+            margin-top: 15px; 
+            padding: 10px; 
+            border-radius: 5px; 
+            white-space: pre-wrap;
+        }
+        .result {
+            font-weight: bold;
+            color: #0051ff;
+            background-color: #ebf4ff;
+        }
+        .steps {
+            background-color: #f8f9fa;
+            font-family: monospace;
+        }
+        .formula {
+            background-color: #e5e7eb;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Potencias de Funciones Trigonométricas</h1>
+    <div class="calculator">
+        <div class="formula">
+            Fórmulas útiles:
+            sin²(x) = (1 - cos(2x))/2
+            cos²(x) = (1 + cos(2x))/2
+        </div>
+        
+        <label for="trig-type">Tipo de función:</label>
+        <select id="trig-type">
+            <option value="sin2">sin²(x)</option>
+            <option value="sin3">sin³(x)</option>
+            <option value="sin4">sin⁴(x)</option>
+            <option value="cos2">cos²(x)</option>
+            <option value="cos3">cos³(x)</option>
+            <option value="cos4">cos⁴(x)</option>
+            <option value="sincos">sin(x)cos(x)</option>
+        </select>
+
+        <label for="coefficient">Coeficiente:</label>
+        <input type="number" id="coefficient" value="1" step="any">
+        
+        <button onclick="calculateTrigPower()">Calcular Integral</button>
+        <div class="result" id="result-output"></div>
+        <div class="steps" id="steps-output"></div>
+    </div>
+
+    <script>
+        function calculateTrigPower() {
+            const type = document.getElementById("trig-type").value;
+            const coefficient = parseFloat(document.getElementById("coefficient").value) || 1;
+            
+            let result = "";
+            let steps = "Pasos de resolución:\n\n";
+            
+            try {
+                switch(type) {
+                    case "sin2":
+                        steps += "1. Usamos la identidad:\n";
+                        steps += "   sin²(x) = (1 - cos(2x))/2\n\n";
+                        steps += "2. Integramos:\n";
+                        steps += "   ∫sin²(x)dx = ∫(1/2)dx - ∫(cos(2x)/2)dx\n";
+                        steps += "   = x/2 - sin(2x)/4 + C\n";
+                        result = `${coefficient}(x/2 - sin(2x)/4) + C`;
+                        break;
+
+                    case "sin3":
+                        steps += "1. Usamos la sustitución:\n";
+                        steps += "   sin³(x) = sin(x)(1 - cos²(x))\n";
+                        steps += "   = sin(x) - sin(x)cos²(x)\n\n";
+                        steps += "2. Integramos:\n";
+                        steps += "   ∫sin³(x)dx = -cos(x) + (cos³(x)/3) + C\n";
+                        result = `${coefficient}(-cos(x) + cos³(x)/3) + C`;
+                        break;
+
+                    case "sin4":
+                        steps += "1. Usamos la identidad doble:\n";
+                        steps += "   sin⁴(x) = ((3 - 4cos(2x) + cos(4x))/8)\n\n";
+                        steps += "2. Integramos:\n";
+                        steps += "   ∫sin⁴(x)dx = (3x/8) - (sin(2x)/4) + (sin(4x)/32) + C\n";
+                        result = `${coefficient}(3x/8 - sin(2x)/4 + sin(4x)/32) + C`;
+                        break;
+
+                    case "cos2":
+                        steps += "1. Usamos la identidad:\n";
+                        steps += "   cos²(x) = (1 + cos(2x))/2\n\n";
+                        steps += "2. Integramos:\n";
+                        steps += "   ∫cos²(x)dx = ∫(1/2)dx + ∫(cos(2x)/2)dx\n";
+                        steps += "   = x/2 + sin(2x)/4 + C\n";
+                        result = `${coefficient}(x/2 + sin(2x)/4) + C`;
+                        break;
+
+                    case "cos3":
+                        steps += "1. Usamos la sustitución:\n";
+                        steps += "   cos³(x) = cos(x)(1 - sin²(x))\n";
+                        steps += "   = cos(x) - cos(x)sin²(x)\n\n";
+                        steps += "2. Integramos:\n";
+                        steps += "   ∫cos³(x)dx = sin(x) - (sin³(x)/3) + C\n";
+                        result = `${coefficient}(sin(x) - sin³(x)/3) + C`;
+                        break;
+
+                    case "cos4":
+                        steps += "1. Usamos la identidad doble:\n";
+                        steps += "   cos⁴(x) = ((3 + 4cos(2x) + cos(4x))/8)\n\n";
+                        steps += "2. Integramos:\n";
+                        steps += "   ∫cos⁴(x)dx = (3x/8) + (sin(2x)/4) + (sin(4x)/32) + C\n";
+                        result = `${coefficient}(3x/8 + sin(2x)/4 + sin(4x)/32) + C`;
+                        break;
+
+                    case "sincos":
+                        steps += "1. Recordamos que:\n";
+                        steps += "   sin(x)cos(x) = sin(2x)/2\n\n";
+                        steps += "2. Integramos:\n";
+                        steps += "   ∫sin(x)cos(x)dx = ∫(sin(2x)/2)dx\n";
+                        steps += "   = -cos(2x)/4 + C\n";
+                        result = `${coefficient}(-cos(2x)/4) + C`;
+                        break;
+                }
+                
+                document.getElementById("result-output").innerHTML = `Resultado:\n${result}`;
+                document.getElementById("steps-output").innerHTML = steps;
+            } catch (error) {
+                document.getElementById("result-output").innerHTML = "Error en el cálculo. Por favor verifica los valores ingresados.";
+                document.getElementById("steps-output").innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>
